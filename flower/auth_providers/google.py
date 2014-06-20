@@ -51,11 +51,11 @@ class GoogleOAuth2Mixin(tornado.auth.OAuth2Mixin):
 
         self.httpclient_instance.fetch(
             request,
-            #self.async_callback(self._on_access_token, callback)
-            self.async_callback(callback)
+            self.async_callback(self._on_access_token, callback)
         )
 
     def _on_access_token(self, callback, response):
+
         if response.error:
             logging.warning('Google auth error: %s' % str(response))
             callback(None)
@@ -92,16 +92,18 @@ class GoogleOAuth2Mixin(tornado.auth.OAuth2Mixin):
         }
         h = httputil.HTTPHeaders()
         h.parse_line("Authorization: Bearer "+GoogleOAuth2Mixin.access_token)
-        conn = httplib.HTTPSConnection("www.googleapis.com")
-        conn.request("GET", "/oauth2/v1/userinfo?access_token="+GoogleOAuth2Mixin.access_token, "", additional_headers)
-        response = conn.getresponse()
-        print response.read()
+        
+        # conn = httplib.HTTPSConnection("www.googleapis.com")
+        # conn.request("GET", "/oauth2/v1/userinfo?access_token="+GoogleOAuth2Mixin.access_token, "", additional_headers)
+        # response = conn.getresponse()
+        # print response.read()
+
         #h.pop("Accept-Encoding")
-        '''request = httpclient.HTTPRequest(self._USER_INFO_URL+"?access_token="+GoogleOAuth2Mixin.access_token, method="GET", headers=h)
+        request = httpclient.HTTPRequest(self._USER_INFO_URL+"?access_token="+GoogleOAuth2Mixin.access_token, method="GET", headers=h)
         self.httpclient_instance.fetch(
             request,
             self.async_callback(callback)
-        )'''
+        )
         
     def _on_response(self):
         if response.error:

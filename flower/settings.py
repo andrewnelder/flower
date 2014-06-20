@@ -15,7 +15,7 @@ APP_SETTINGS = dict(
     redirect_uri="http://localhost:5555/login",
     google_consumer_key="66897343117-lq4ed7cnhv69hli0vtduism4alhj7fqn.apps.googleusercontent.com",
     google_consumer_secret="6VVbC4aYOxA87WofuBykyRVb",
-    google_permissions="https://mail.google.com/",
+    google_permissions="openid profile email https://mail.google.com/ https://www.google.com/m8/feeds",
     google_permissions2="https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"
 )
 
