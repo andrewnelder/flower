@@ -15,16 +15,6 @@ from ..auth_providers.google import GoogleOAuth2Mixin
 from .. import settings
 from ..views import BaseHandler
 
-# settings = dict(
-#             cookie_secret="32oETzKXQAGaYdkL5gEmGeJJFuYh7EQnp2XdTP1o/Vo=",
-#             login_url="/auth/login",
-#             redirect_uri="http://localhost:8888/auth/login",
-#             google_consumer_key="9019235013.apps.googleusercontent.com",
-#             google_consumer_secret="gMLIOSM8rLFr53nZvm8J4Nz1",
-#             google_permissions="https://mail.google.com/ https://www.google.com/m8/feeds",
-#             google_permissions2="https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"
-#         )
-
 class LoginHandler(BaseHandler, GoogleOAuth2Mixin):
     @tornado.web.asynchronous
     def get(self):
