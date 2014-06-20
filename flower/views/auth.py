@@ -25,7 +25,6 @@ class LoginHandler(BaseHandler, GoogleOAuth2Mixin):
         self.authorize_redirect(self.settings['google_permissions'])
 
     def _on_auth(self, response):
-        import pdb; pdb.set_trace()
         #print response.body
         #print response.request.headers
         if not response:

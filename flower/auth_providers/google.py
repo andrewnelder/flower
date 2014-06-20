@@ -40,7 +40,7 @@ class GoogleOAuth2Mixin(tornado.auth.OAuth2Mixin):
 
     def get_authenticated_user(self, authorization_code, callback):
         args = {
-            "redirect_uri": 'http://localhost:8888/auth/login',
+            "redirect_uri": self.settings['redirect_uri'],
             "client_id": self.settings['google_consumer_key'],
             "code": authorization_code,
             "client_secret": self.settings['google_consumer_secret'],
@@ -49,6 +49,8 @@ class GoogleOAuth2Mixin(tornado.auth.OAuth2Mixin):
         
         request = httpclient.HTTPRequest(self._OAUTH_ACCESS_TOKEN_URL, method="POST", body=urllib.urlencode(args))
         
+        import pdb; pdb.set_trace()
+
         self.httpclient_instance.fetch(
             request,
             self.async_callback(self._on_access_token, callback)
