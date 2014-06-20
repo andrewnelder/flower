@@ -52,7 +52,7 @@ class GoogleOAuth2Mixin(tornado.auth.OAuth2Mixin):
         self.httpclient_instance.fetch(
             request,
             #self.async_callback(self._on_access_token, callback)
-            self.async_callback(callback, request)
+            self.async_callback(callback)
         )
 
     def _on_access_token(self, callback, response):
