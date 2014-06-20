@@ -10,37 +10,43 @@ import re
 import tornado.web
 import tornado.auth
 
+from ..auth_providers.google import GoogleOAuth2Mixin
+
 from .. import settings
 from ..views import BaseHandler
 
+# settings = dict(
+#             cookie_secret="32oETzKXQAGaYdkL5gEmGeJJFuYh7EQnp2XdTP1o/Vo=",
+#             login_url="/auth/login",
+#             redirect_uri="http://localhost:8888/auth/login",
+#             google_consumer_key="9019235013.apps.googleusercontent.com",
+#             google_consumer_secret="gMLIOSM8rLFr53nZvm8J4Nz1",
+#             google_permissions="https://mail.google.com/ https://www.google.com/m8/feeds",
+#             google_permissions2="https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email"
+#         )
 
-class LoginHandler(BaseHandler, tornado.auth.GoogleMixin):
+class LoginHandler(BaseHandler, GoogleOAuth2Mixin):
     @tornado.web.asynchronous
     def get(self):
-        if self.get_argument("openid.mode", None):
-            self.get_authenticated_user(self.async_callback(self._on_auth))
+        if self.get_argument("code", None):
+            authorization_code = self.get_argument("code", None)
+            self.get_authenticated_user(authorization_code, self.async_callback(self._on_auth))
             return
+        self.authorize_redirect(self.settings['google_permissions'])
 
-        callback_uri = None
-        if settings.URL_PREFIX:
-            qs = dict(parse_qsl(urlparse(self.request.uri).query))
-            next = qs.get('next', '/')
-            callback_uri = self.absolute_url('/login')
-            callback_uri += '?' + urlencode(dict(next=next))
-
-        self.authenticate_redirect(callback_uri=callback_uri)
-
-    def _on_auth(self, user):
-        if not user:
+    def _on_auth(self, response):
+        print response.body
+        print response.request.headers
+        if not response:
             raise tornado.web.HTTPError(500, 'Google auth failed')
-        if not re.match(self.application.auth, user['email']):
+        if not re.match(self.application.auth, response['email']):
             raise tornado.web.HTTPError(
                 404,
                 "Access denied to '{email}'. "
                 "Please use another account or ask your admin to "
-                "add your email to flower --auth".format(**user))
+                "add your email to flower --auth".format(**response))
 
-        self.set_secure_cookie("user", str(user['email']))
+        self.set_secure_cookie("user", str(response['email']))
 
         next = self.get_argument('next', '/')
         if settings.URL_PREFIX:

@@ -16,6 +16,12 @@ from .. import settings
 from ..utils import template, bugreport
 
 
+# client-id: 66897343117-lq4ed7cnhv69hli0vtduism4alhj7fqn.apps.googleusercontent.com
+# client-secret: 6VVbC4aYOxA87WofuBykyRVb
+
+# email: 66897343117-hr689ui6lgssoltetpd5mjt3is6i6s0l@developer.gserviceaccount.com
+
+
 class BaseHandler(tornado.web.RequestHandler):
 
     def prepare(self):
