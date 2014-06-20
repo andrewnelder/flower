@@ -48,12 +48,10 @@ class GoogleOAuth2Mixin(tornado.auth.OAuth2Mixin):
         }
         
         request = httpclient.HTTPRequest(self._OAUTH_ACCESS_TOKEN_URL, method="POST", body=urllib.urlencode(args))
-        
-        import pdb; pdb.set_trace()
 
         self.httpclient_instance.fetch(
             request,
-            self.async_callback(self._on_access_token, callback)
+            self.async_callback(self._on_access_token, callback, request)
         )
 
     def _on_access_token(self, callback, response):
