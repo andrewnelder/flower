@@ -25,8 +25,9 @@ class LoginHandler(BaseHandler, GoogleOAuth2Mixin):
         self.authorize_redirect(self.settings['google_permissions'])
 
     def _on_auth(self, response):
-        print response.body
-        print response.request.headers
+        import pdb; pdb.set_trace()
+        #print response.body
+        #print response.request.headers
         if not response:
             raise tornado.web.HTTPError(500, 'Google auth failed')
         if not re.match(self.application.auth, response['email']):
