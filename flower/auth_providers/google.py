@@ -9,7 +9,6 @@ import urllib2
 import urlparse
 import httplib, urllib
 
-import xoauth
 import base64
 import gdata.gauth
 import gdata.contacts.service
